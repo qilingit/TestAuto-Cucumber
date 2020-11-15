@@ -3,14 +3,8 @@ package features;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
+import net.thucydides.core.annotations.Steps;
 import static org.junit.Assert.*;
-
-class activeAndAddress {
-    static String whichActive(String channel) {
-        return  channel.equals("FACE") ? "inactive" : (channel.equals("EC")  ? "active" : null);
-    }
-}
 
 public class StepDefinitions {
     private String oldAddress;
@@ -25,13 +19,16 @@ public class StepDefinitions {
         }
     }
 
+    @Steps
+    Active active;
+
     @Given("a subscriber with an main address {string} in France")
     public void a_subscriber_with_an_main_address_in_france(String oldAddress) {
         this.oldAddress = oldAddress;
     }
     @When("the advisor connected to {string} modify the subscriber's address to {string} with effect date {string}")
     public void the_advisor_connected_to_modify_the_subscriber_s_address_to_with_effect_date(String channel, String newAddress, String date) {
-        this.answerForActive = activeAndAddress.whichActive(channel);
+        this.answerForActive = active.whichActive(channel);
         this.newAddress = changeAddress(newAddress, date);
     }
     @Then("the active should be {string}")
